@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+/* Tailwind v4's automatic content detection walks up to find a .git
+   directory to anchor the project root — inside a Docker build context
+   (where .git is correctly excluded via .dockerignore) that detection
+   silently finds nothing and no utility classes get generated at all,
+   with no warning. This makes the scan path explicit instead, so it
+   works the same with or without .git present. Path is relative to this
+   file's own directory (src/app/), so ".." is the src/ directory holding
+   every component/page/lib file that uses Tailwind classes. */
+@source "..";
+
 :root {
   --color-navy: #0f1e2e;
   --color-teal: #0d6b5f;
