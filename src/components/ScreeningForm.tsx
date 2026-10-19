@@ -25,6 +25,13 @@ type Profile = {
   email: string | null;
 };
 
+const SECTION_NAV = [
+  { id: "section-personal", label: "A. Personal data" },
+  { id: "section-travel", label: "B. Travel information" },
+  { id: "section-clinical", label: "C. Clinical data" },
+  { id: "section-declaration", label: "D. Declaration" },
+];
+
 const defaultClinicalAnswers = Object.fromEntries(
   clinicalQuestions.map((q) => [q.key, undefined])
 ) as Record<ClinicalQuestionKey, boolean | undefined>;
@@ -89,15 +96,31 @@ export function ScreeningForm({ profile }: { profile: Profile }) {
   };
 
   return (
-    <form
-      ref={formRef}
-      onSubmit={handleSubmit(onSubmit, onInvalid)}
-      method="post"
-      className="flex flex-col gap-10"
-      noValidate
-    >
+    <div className="lg:grid lg:grid-cols-[180px_1fr] lg:items-start lg:gap-12">
+      <nav
+        aria-label="Form sections"
+        className="sticky top-24 mb-8 hidden flex-col gap-1 lg:flex"
+      >
+        {SECTION_NAV.map((item) => (
+          <a
+            key={item.id}
+            href={`#${item.id}`}
+            className="rounded-[6px] px-2.5 py-1.5 text-sm font-medium text-[var(--color-muted)] hover:bg-[var(--color-page-bg)] hover:text-[var(--color-navy)]"
+          >
+            {item.label}
+          </a>
+        ))}
+      </nav>
+
+      <form
+        ref={formRef}
+        onSubmit={handleSubmit(onSubmit, onInvalid)}
+        method="post"
+        className="flex flex-col gap-10"
+        noValidate
+      >
       {/* A. Personal data */}
-      <section className="flex flex-col gap-5">
+      <section id="section-personal" className="scroll-mt-24 flex flex-col gap-5">
         <h2 className="text-lg font-semibold text-[var(--color-navy)]">A. Personal data</h2>
         <div data-field-name="fullName">
           <TextField label="Full name" error={errors.fullName?.message} {...register("fullName")} />
@@ -150,7 +173,7 @@ export function ScreeningForm({ profile }: { profile: Profile }) {
       </section>
 
       {/* B. Travel information */}
-      <section className="flex flex-col gap-5">
+      <section id="section-travel" className="scroll-mt-24 flex flex-col gap-5">
         <h2 className="text-lg font-semibold text-[var(--color-navy)]">B. Travel information</h2>
         <div data-field-name="purpose">
           <Controller
@@ -229,7 +252,7 @@ export function ScreeningForm({ profile }: { profile: Profile }) {
       </section>
 
       {/* C. Clinical data */}
-      <section className="flex flex-col gap-6">
+      <section id="section-clinical" className="scroll-mt-24 flex flex-col gap-6">
         <h2 className="text-lg font-semibold text-[var(--color-navy)]">C. Clinical data</h2>
 
         <div className="flex flex-col gap-4">
@@ -306,7 +329,7 @@ export function ScreeningForm({ profile }: { profile: Profile }) {
       </section>
 
       {/* D. Declaration */}
-      <section className="flex flex-col gap-4">
+      <section id="section-declaration" className="scroll-mt-24 flex flex-col gap-4">
         <h2 className="text-lg font-semibold text-[var(--color-navy)]">D. Declaration</h2>
         <div data-field-name="declarationAccepted">
           <Checkbox
@@ -325,6 +348,7 @@ export function ScreeningForm({ profile }: { profile: Profile }) {
       <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
         {isSubmitting ? "Submitting…" : "Submit screening"}
       </Button>
-    </form>
+      </form>
+    </div>
   );
 }

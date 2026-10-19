@@ -23,10 +23,11 @@ export default async function DashboardPage() {
   const firstName = user.fullName.split(" ")[0] || user.fullName;
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+    <div className="flex flex-col gap-10">
+      <div className="flex flex-col items-start justify-between gap-4 border-b border-[var(--color-border)] pb-6 sm:flex-row sm:items-end">
         <div>
-          <h1 className="text-2xl font-bold text-[var(--color-navy)]">Hello, {firstName}</h1>
+          <p className="text-xs font-semibold uppercase tracking-wide text-[var(--color-teal)]">Dashboard</p>
+          <h1 className="mt-1.5 text-2xl font-bold text-[var(--color-navy)]">Hello, {firstName}</h1>
           <p className="mt-1 text-sm text-[var(--color-muted)]">
             Here&apos;s an overview of your EVD travel screenings.
           </p>
@@ -40,12 +41,16 @@ export default async function DashboardPage() {
       </div>
 
       <section>
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">
-          Latest submission
-        </h2>
+        <h2 className="text-sm font-semibold text-[var(--color-navy)]">Latest submission</h2>
         <div className="mt-3">
           {latest ? (
-            <Card className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div
+              className={`flex flex-col gap-4 rounded-[6px] border border-l-4 bg-white p-6 sm:flex-row sm:items-center sm:justify-between ${
+                latest.status === "CLEAR"
+                  ? "border-[var(--color-border)] border-l-[var(--color-success)]"
+                  : "border-[var(--color-border)] border-l-[var(--color-danger)]"
+              }`}
+            >
               <div>
                 <p className="font-medium text-[var(--color-navy)]">{latest.destination}</p>
                 <p className="mt-1 text-sm text-[var(--color-muted)]">
@@ -61,7 +66,7 @@ export default async function DashboardPage() {
                   View pass
                 </Link>
               </div>
-            </Card>
+            </div>
           ) : (
             <Card className="text-center">
               <p className="text-sm text-[var(--color-muted)]">
@@ -78,9 +83,7 @@ export default async function DashboardPage() {
       {recent.length > 0 && (
         <section>
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">
-              Recent submissions
-            </h2>
+            <h2 className="text-sm font-semibold text-[var(--color-navy)]">Recent submissions</h2>
             <Link href="/history" className="text-sm font-medium text-[var(--color-teal)] hover:underline">
               View all history
             </Link>
@@ -88,7 +91,12 @@ export default async function DashboardPage() {
           <div className="mt-3 overflow-hidden rounded-[6px] border border-[var(--color-border)] bg-white">
             <ul className="divide-y divide-[var(--color-border)]">
               {recent.map((s) => (
-                <li key={s.id} className="flex items-center justify-between gap-4 px-4 py-3">
+                <li
+                  key={s.id}
+                  className={`flex items-center justify-between gap-4 border-l-4 px-4 py-3 ${
+                    s.status === "CLEAR" ? "border-l-[var(--color-success)]" : "border-l-[var(--color-danger)]"
+                  }`}
+                >
                   <div>
                     <p className="text-sm font-medium text-[var(--color-navy)]">{s.destination}</p>
                     <p className="text-xs text-[var(--color-muted)]">{formatDate(s.departureDate)}</p>

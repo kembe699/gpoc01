@@ -10,7 +10,7 @@ export default async function NewScreeningPage() {
   if (!user) redirect("/login");
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="mx-auto max-w-3xl lg:max-w-4xl">
       <h1 className="text-2xl font-bold text-[var(--color-navy)]">EVD Travel Screening</h1>
       <p className="mt-2 text-sm text-[var(--color-muted)]">
         Fields are prefilled from your profile — you can edit them for this submission only.

@@ -30,15 +30,15 @@ export function AppNav({ fullName, logo }: { fullName: string; logo: React.React
           {logo}
         </Link>
 
-        <nav className="hidden items-center gap-6 md:flex" aria-label="Main">
+        <nav className="hidden h-full items-center gap-6 md:flex" aria-label="Main">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={`text-sm font-medium transition-colors ${
+              className={`flex h-full items-center border-b-2 text-sm font-medium transition-colors ${
                 pathname === link.href
-                  ? "text-[var(--color-teal)]"
-                  : "text-[var(--color-navy)] hover:text-[var(--color-teal)]"
+                  ? "border-[var(--color-teal)] text-[var(--color-teal)]"
+                  : "border-transparent text-[var(--color-navy)] hover:text-[var(--color-teal)]"
               }`}
             >
               {link.label}

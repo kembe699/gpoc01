@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Logo } from "@/components/Logo";
-import { Card } from "@/components/ui/Card";
+import { AuthLayout } from "@/components/AuthLayout";
 import { Notice } from "@/components/ui/Notice";
 import { LoginForm } from "@/components/LoginForm";
 
@@ -15,32 +14,27 @@ export default async function LoginPage({
   const params = await searchParams;
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center px-4 py-10">
-      <div className="mb-8">
-        <Logo />
+    <AuthLayout>
+      <h1 className="text-xl font-semibold text-[var(--color-navy)]">Sign in</h1>
+      {params.reset === "success" && (
+        <Notice tone="success" className="mt-4">
+          Your password has been reset. Please sign in.
+        </Notice>
+      )}
+      <div className="mt-6">
+        <LoginForm next={params.next} />
       </div>
-      <Card className="w-full max-w-sm">
-        <h1 className="text-xl font-semibold text-[var(--color-navy)]">Sign in</h1>
-        {params.reset === "success" && (
-          <Notice tone="success" className="mt-4">
-            Your password has been reset. Please sign in.
-          </Notice>
-        )}
-        <div className="mt-6">
-          <LoginForm next={params.next} />
-        </div>
-        <div className="mt-6 flex flex-col gap-2 text-sm text-[var(--color-muted)]">
-          <Link href="/forgot-password" className="text-[var(--color-teal)] hover:underline">
-            Forgot your password?
+      <div className="mt-6 flex flex-col gap-2 text-sm text-[var(--color-muted)]">
+        <Link href="/forgot-password" className="text-[var(--color-teal)] hover:underline">
+          Forgot your password?
+        </Link>
+        <p>
+          New here?{" "}
+          <Link href="/register" className="text-[var(--color-teal)] hover:underline">
+            Create an account
           </Link>
-          <p>
-            New here?{" "}
-            <Link href="/register" className="text-[var(--color-teal)] hover:underline">
-              Create an account
-            </Link>
-          </p>
-        </div>
-      </Card>
-    </div>
+        </p>
+      </div>
+    </AuthLayout>
   );
 }

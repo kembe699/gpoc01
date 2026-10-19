@@ -65,7 +65,9 @@ export default async function HistoryPage({
         </Card>
       ) : (
         <>
-          <HistoryFilters years={years} />
+          <div className="rounded-[6px] border border-[var(--color-border)] bg-white p-4">
+            <HistoryFilters years={years} />
+          </div>
 
           {result.items.length === 0 ? (
             <Card className="text-center">
@@ -93,7 +95,11 @@ export default async function HistoryPage({
                   <tbody className="divide-y divide-[var(--color-border)]">
                     {result.items.map((s) => (
                       <tr key={s.id}>
-                        <td className="whitespace-nowrap px-4 py-3 font-mono text-xs text-[var(--color-muted)]">
+                        <td
+                          className={`whitespace-nowrap border-l-4 px-4 py-3 font-mono text-xs text-[var(--color-muted)] ${
+                            s.status === "CLEAR" ? "border-l-[var(--color-success)]" : "border-l-[var(--color-danger)]"
+                          }`}
+                        >
                           {s.reference}
                         </td>
                         <td className="px-4 py-3 text-[var(--color-navy)]">{s.destination}</td>
@@ -129,7 +135,12 @@ export default async function HistoryPage({
               {/* Mobile cards */}
               <div className="flex flex-col gap-3 sm:hidden">
                 {result.items.map((s) => (
-                  <Card key={s.id}>
+                  <Card
+                    key={s.id}
+                    className={`border-l-4 ${
+                      s.status === "CLEAR" ? "border-l-[var(--color-success)]" : "border-l-[var(--color-danger)]"
+                    }`}
+                  >
                     <div className="flex items-start justify-between gap-3">
                       <div>
                         <p className="font-medium text-[var(--color-navy)]">{s.destination}</p>
