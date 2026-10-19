@@ -1,0 +1,119 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Prisma 7: the connection URL no longer lives here — it's read from
+// DATABASE_URL in prisma.config.ts (for migrate/studio) and passed as a
+// driver adapter to the PrismaClient constructor in src/lib/db.ts.
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  fullName     String
+  email        String   @unique
+  passwordHash String
+  department   String
+  phone        String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  sessions            Session[]
+  passwordResetTokens PasswordResetToken[]
+  screenings          Screening[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  userAgent String?
+  ipAddress String?
+
+  @@index([userId])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  email     String
+  ipAddress String
+  success   Boolean
+  createdAt DateTime @default(now())
+
+  @@index([email, createdAt])
+  @@index([ipAddress, createdAt])
+}
+
+enum Sex {
+  FEMALE
+  MALE
+}
+
+enum Purpose {
+  BUSINESS
+  LEAVE
+  OTHER
+}
+
+enum ScreeningStatus {
+  CLEAR
+  REVIEW_NEEDED
+}
+
+model Screening {
+  id        String          @id @default(cuid())
+  reference String          @unique
+  userId    String
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status    ScreeningStatus
+
+  // Snapshot of the personal fields at submission time — a later profile
+  // edit must never change what a past screening says.
+  fullName   String
+  department String
+  age        Int
+  sex        Sex
+  phone      String
+  email      String?
+
+  purpose      Purpose
+  purposeOther String?
+  fromCountry  String
+  destination  String
+  departureDate DateTime @db.Date
+  returnDate    DateTime? @db.Date
+  flight        String?
+
+  contactFever          Boolean
+  contactGI             Boolean
+  contactAches          Boolean
+  contactWeakness       Boolean
+  contactBleeding       Boolean
+  ownSymptoms21d        Boolean
+  bodyFluidContact      Boolean
+  burialContact         Boolean
+  awarenessReceived     Boolean
+  followingPrecautions  Boolean
+
+  declarationAccepted Boolean
+  submittedAt         DateTime @default(now())
+
+  @@index([userId, submittedAt])
+  @@index([userId, departureDate])
+}

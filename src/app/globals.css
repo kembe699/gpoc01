@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+:root {
+  --color-navy: #0f1e2e;
+  --color-teal: #0d6b5f;
+  --color-teal-dark: #0a5349;
+  --color-page-bg: #f5f7f8;
+  --color-card: #ffffff;
+  --color-border: #dde3e6;
+  --color-danger: #b3261e;
+  --color-danger-bg: #fbeceb;
+  --color-success: #1f7a3d;
+  --color-success-bg: #eaf4ec;
+  --color-muted: #5b6b78;
+}
+
+@theme inline {
+  --color-navy: var(--color-navy);
+  --color-teal: var(--color-teal);
+  --color-teal-dark: var(--color-teal-dark);
+  --color-page-bg: var(--color-page-bg);
+  --color-card: var(--color-card);
+  --color-border: var(--color-border);
+  --color-danger: var(--color-danger);
+  --color-danger-bg: var(--color-danger-bg);
+  --color-success: var(--color-success);
+  --color-success-bg: var(--color-success-bg);
+  --color-muted: var(--color-muted);
+  --font-sans: var(--font-inter);
+}
+
+body {
+  background: var(--color-page-bg);
+  color: var(--color-navy);
+}
+
+/* Visible keyboard focus everywhere — never remove the outline, only
+   restyle it to match the design. */
+:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

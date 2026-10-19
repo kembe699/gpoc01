@@ -1,0 +1,22 @@
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: gpoc
+      POSTGRES_PASSWORD: gpoc_dev_password
+      POSTGRES_DB: gpoc_evd
+    ports:
+      # Host port 5434, not the default 5432 — avoids clashing with any
+      # other local Postgres already running.
+      - "5434:5432"
+    volumes:
+      - gpoc_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gpoc -d gpoc_evd"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  gpoc_db_data:
