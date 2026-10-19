@@ -39,27 +39,28 @@ export default async function LandingPage() {
       <header className="border-b border-[var(--color-border)] bg-[var(--color-card)]">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
           <Logo />
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-3">
             {user ? (
               <Link
                 href="/dashboard"
-                className="rounded-[6px] bg-[var(--color-teal)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--color-teal-dark)]"
+                className="rounded-[6px] bg-[var(--color-teal)] px-3 py-2 text-xs font-medium text-white hover:bg-[var(--color-teal-dark)] sm:px-4 sm:text-sm"
               >
-                Go to dashboard
+                Dashboard
               </Link>
             ) : (
               <>
                 <Link
                   href="/login"
-                  className="rounded-[6px] px-3 py-2 text-sm font-medium text-[var(--color-navy)] hover:bg-[var(--color-page-bg)]"
+                  className="rounded-[6px] px-2 py-2 text-xs font-medium text-[var(--color-navy)] hover:bg-[var(--color-page-bg)] sm:px-3 sm:text-sm"
                 >
                   Sign in
                 </Link>
                 <Link
                   href="/register"
-                  className="rounded-[6px] bg-[var(--color-teal)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--color-teal-dark)]"
+                  className="rounded-[6px] bg-[var(--color-teal)] px-3 py-2 text-xs font-medium text-white hover:bg-[var(--color-teal-dark)] sm:px-4 sm:text-sm"
                 >
-                  Create account
+                  <span className="sm:hidden">Sign up</span>
+                  <span className="hidden sm:inline">Create account</span>
                 </Link>
               </>
             )}

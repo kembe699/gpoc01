@@ -17,8 +17,8 @@ export function Logo({ className = "" }: { className?: string }) {
           GPOC
         </span>
       )}
-      <span className="h-6 w-px bg-[var(--color-border)]" aria-hidden="true" />
-      <span className="text-sm text-[var(--color-muted)]">Health &amp; Safety</span>
+      <span className="hidden h-6 w-px bg-[var(--color-border)] sm:inline-block" aria-hidden="true" />
+      <span className="hidden text-sm text-[var(--color-muted)] sm:inline">Health &amp; Safety</span>
     </div>
   );
 }
