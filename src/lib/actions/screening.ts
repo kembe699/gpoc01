@@ -52,5 +52,5 @@ export async function createScreeningAction(input: unknown): Promise<ActionResul
     },
   });
 
-  redirect(`/screenings/${screening.id}`);
+  redirect(`/screenings/${screening.id}?submitted=1`);
 }

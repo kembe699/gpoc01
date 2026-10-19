@@ -1,34 +1,15 @@
 import "server-only";
-import { randomBytes, createHash } from "crypto";
 import { cookies } from "next/headers";
-import bcrypt from "bcryptjs";
 import { prisma } from "./db";
+import { hashToken, generateToken } from "./crypto";
 import type { User } from "@prisma/client";
 
+export { hashPassword, verifyPassword, generateToken, hashToken } from "./crypto";
+
 export const SESSION_COOKIE = "gpoc_session";
-const BCRYPT_ROUNDS = 12;
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 const THIRTY_DAYS_MS = 30 * ONE_DAY_MS;
-
-export async function hashPassword(password: string): Promise<string> {
-  return bcrypt.hash(password, BCRYPT_ROUNDS);
-}
-
-export async function verifyPassword(password: string, hash: string): Promise<boolean> {
-  return bcrypt.compare(password, hash);
-}
-
-// Sessions and password-reset links both work the same way: a random
-// 32-byte token goes to the browser/email link, and only its SHA-256 hash
-// is ever stored — so a leaked database never hands over usable tokens.
-export function generateToken(): string {
-  return randomBytes(32).toString("base64url");
-}
-
-export function hashToken(token: string): string {
-  return createHash("sha256").update(token).digest("hex");
-}
 
 export async function createSession(
   userId: string,

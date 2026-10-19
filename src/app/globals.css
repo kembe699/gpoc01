@@ -14,24 +14,10 @@
   --color-muted: #5b6b78;
 }
 
-@theme inline {
-  --color-navy: var(--color-navy);
-  --color-teal: var(--color-teal);
-  --color-teal-dark: var(--color-teal-dark);
-  --color-page-bg: var(--color-page-bg);
-  --color-card: var(--color-card);
-  --color-border: var(--color-border);
-  --color-danger: var(--color-danger);
-  --color-danger-bg: var(--color-danger-bg);
-  --color-success: var(--color-success);
-  --color-success-bg: var(--color-success-bg);
-  --color-muted: var(--color-muted);
-  --font-sans: var(--font-inter);
-}
-
 body {
   background: var(--color-page-bg);
   color: var(--color-navy);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
 /* Visible keyboard focus everywhere — never remove the outline, only

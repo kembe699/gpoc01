@@ -1,15 +1,17 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-// This only short-circuits obviously signed-out requests by checking that
-// the session cookie exists, to avoid a round trip to a protected page that
-// will just bounce back. It never trusts the cookie's *validity* — every
-// protected page and action re-checks the session against the database via
-// getCurrentUser(), since a middleware check alone can't be trusted (the
-// cookie could be stale, expired, or revoked).
+// Next 16 renamed the middleware.ts convention to proxy.ts — same role,
+// same API, just a new file/export name. This only short-circuits
+// obviously signed-out requests by checking that the session cookie
+// exists, to avoid a round trip to a protected page that will just bounce
+// back. It never trusts the cookie's *validity* — every protected page and
+// action re-checks the session against the database via getCurrentUser(),
+// since this check alone can't be trusted (the cookie could be stale,
+// expired, or revoked).
 const PROTECTED_PREFIXES = ["/dashboard", "/screenings", "/history", "/account"];
 const SESSION_COOKIE = "gpoc_session";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isProtected = PROTECTED_PREFIXES.some(
     (p) => pathname === p || pathname.startsWith(`${p}/`)

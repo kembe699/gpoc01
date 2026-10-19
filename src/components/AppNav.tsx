@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, User, LogOut } from "lucide-react";
-import { Logo } from "./Logo";
 import { logoutAction } from "@/lib/actions/auth";
 
 const NAV_LINKS = [
@@ -13,17 +12,22 @@ const NAV_LINKS = [
   { href: "/history", label: "History" },
 ];
 
-export function AppNav({ fullName }: { fullName: string }) {
+// `logo` is rendered server-side and passed in rather than importing
+// <Logo /> directly here — Logo checks the filesystem for a real logo.svg
+// (Node's `fs`), which can't be bundled into this Client Component's
+// browser code. Passing the already-rendered server output as a prop
+// keeps that check on the server while this component stays interactive.
+export function AppNav({ fullName, logo }: { fullName: string; logo: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
   const firstName = fullName.split(" ")[0] || fullName;
 
   return (
-    <header className="sticky top-0 z-10 border-b border-[var(--color-border)] bg-[var(--color-card)]">
+    <header className="no-print sticky top-0 z-10 border-b border-[var(--color-border)] bg-[var(--color-card)]">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link href="/dashboard" aria-label="GPOC Health & Safety home">
-          <Logo />
+          {logo}
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex" aria-label="Main">

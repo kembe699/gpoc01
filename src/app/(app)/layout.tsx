@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { AppNav } from "@/components/AppNav";
+import { Logo } from "@/components/Logo";
 
 // Middleware only checks that a session cookie exists, as a fast
 // redirect for the obvious case. Every protected page re-checks the
@@ -12,7 +13,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="flex min-h-screen flex-col">
-      <AppNav fullName={user.fullName} />
+      <AppNav fullName={user.fullName} logo={<Logo />} />
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">{children}</main>
     </div>
   );

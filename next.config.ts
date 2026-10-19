@@ -5,6 +5,10 @@ import type { NextConfig } from "next";
 // content from a cookie, and an experimental cache layer is the wrong place
 // to find that out the hard way.
 const nextConfig: NextConfig = {
+  // Needed for the multi-stage Dockerfile — bundles a minimal
+  // node_modules subset into .next/standalone rather than shipping the
+  // whole dependency tree.
+  output: "standalone",
   async headers() {
     const csp = [
       "default-src 'self'",
