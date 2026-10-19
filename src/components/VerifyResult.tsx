@@ -1,12 +1,15 @@
 import type { Screening } from "@prisma/client";
 import { CheckCircle2, AlertTriangle } from "lucide-react";
 import { formatDateTime } from "@/lib/dates";
+import { FullAnswers } from "./FullAnswers";
+import { clinicalQuestions } from "@/lib/questions";
 
 // The focused scan-result view — deliberately NOT the full pass card.
 // Someone scanning a QR at a checkpoint or clinic needs one thing fast: is
-// this traveller clear, or do they need to see a doctor first. Everything
-// else (destination, dates, the full clinical Q&A) is on the owner's own
-// pass page, not here.
+// this traveller clear, or do they need to see a doctor first — so the
+// status leads. The clinical answers follow underneath (open by default,
+// since that's the detail a checkpoint/clinic actually scans for); trip
+// details like destination and dates stay on the owner's own pass page.
 export function VerifyResult({ screening }: { screening: Screening }) {
   const isClear = screening.status === "CLEAR";
 
@@ -45,6 +48,10 @@ export function VerifyResult({ screening }: { screening: Screening }) {
           <p className="font-mono">{screening.reference}</p>
           <p>Submitted {formatDateTime(screening.submittedAt)}</p>
         </div>
+      </div>
+
+      <div className="border-t border-[var(--color-border)] px-6 py-6 text-left sm:py-8">
+        <FullAnswers screening={screening} questions={clinicalQuestions} defaultOpen />
       </div>
     </div>
   );

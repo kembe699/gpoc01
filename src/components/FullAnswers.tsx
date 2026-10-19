@@ -6,12 +6,14 @@ import type { ClinicalQuestion } from "@/lib/questions";
 export function FullAnswers({
   screening,
   questions,
+  defaultOpen = false,
 }: {
   screening: Screening;
   questions: ClinicalQuestion[];
+  defaultOpen?: boolean;
 }) {
   return (
-    <details className="group rounded-[6px] border border-[var(--color-border)] p-4">
+    <details open={defaultOpen} className="group rounded-[6px] border border-[var(--color-border)] p-4">
       <summary className="cursor-pointer text-sm font-medium text-[var(--color-navy)]">
         Full answers
       </summary>

@@ -33,7 +33,7 @@ export default async function VerifyScreeningPage({
         </Link>
       </div>
 
-      <div className="w-full max-w-sm">
+      <div className="w-full max-w-md">
         <VerifyResult screening={screening} />
       </div>
     </div>
