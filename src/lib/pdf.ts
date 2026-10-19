@@ -2,7 +2,7 @@ import "server-only";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import type { Screening } from "@prisma/client";
 import { generateQrPngBuffer } from "./qr";
-import { buildQrText } from "./qrText";
+import { buildVerifyUrl } from "./verifyUrl";
 import { formatDate, formatDateTime, formatDuration } from "./dates";
 
 const NAVY = rgb(0x0f / 255, 0x1e / 255, 0x2e / 255);
@@ -79,7 +79,7 @@ export async function generatePassPdf(screening: Screening): Promise<Uint8Array>
   }
 
   // QR code, centred.
-  const qrBuffer = await generateQrPngBuffer(buildQrText(screening), 320);
+  const qrBuffer = await generateQrPngBuffer(buildVerifyUrl(screening.id), 320);
   const qrImage = await pdfDoc.embedPng(qrBuffer);
   const qrDisplaySize = 220;
   page.drawImage(qrImage, {

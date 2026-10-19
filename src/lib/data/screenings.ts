@@ -9,6 +9,15 @@ export async function getScreeningForOwner(id: string, userId: string): Promise<
   return prisma.screening.findFirst({ where: { id, userId } });
 }
 
+// The one deliberate exception: /verify/[id], reached by scanning a pass's
+// QR code, is meant to work for a clinic or checkpoint member of staff who
+// isn't the traveler and isn't signed in at all. The screening's own id —
+// a long, effectively unguessable value — is what protects it here, the
+// same model as an "unlisted" shared link.
+export async function getScreeningPublic(id: string): Promise<Screening | null> {
+  return prisma.screening.findUnique({ where: { id } });
+}
+
 export async function getLatestScreening(userId: string): Promise<Screening | null> {
   return prisma.screening.findFirst({
     where: { userId },
