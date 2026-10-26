@@ -205,6 +205,67 @@ Built from scratch, no hosted auth service:
    off-box (e.g. to S3) — a daily cron that only writes to the same disk
    the database lives on doesn't protect against disk failure.
 
+## 4b. Deploying to Vercel + Supabase
+
+The app runs on Vercel as serverless functions and keeps its data in a
+Supabase Postgres database. Nothing in the app uses Supabase's client
+libraries or auth — only its Postgres.
+
+### Supabase
+
+1. Create a project. Pick the region closest to your users, and use the
+   **same region for Vercel's functions** (Vercel › Project › Settings ›
+   Functions › Region) — every page makes several database round trips.
+2. Project Settings › Database › **Connection string**: copy two URLs
+   (replace `[YOUR-PASSWORD]` with the database password):
+   - **Transaction pooler** (port **6543**) → `DATABASE_URL` (the app at runtime)
+   - **Direct connection** (port **5432**) → `DIRECT_URL` (migrations). If your
+     network has no IPv6, use the **Session pooler** URL (also port 5432) instead.
+3. Optional but recommended: Project Settings › Database › **SSL** › download
+   the CA certificate and put its contents in `DATABASE_CA_CERT`, so TLS is
+   fully verified.
+4. Row Level Security is switched on for every table by a migration, so
+   Supabase's REST API (the public "anon" key) can't read anything. Prisma
+   connects as the tables' owner and isn't affected. You can also turn the
+   Data API off entirely (Project Settings › API).
+
+### Vercel
+
+1. Push the repository to GitHub and **Import** it in Vercel (framework:
+   Next.js — detected). Set **Node.js 22** (Settings › General; also pinned
+   in `package.json` `engines`).
+2. Add these environment variables (Production, and Preview if you use it —
+   ideally pointing Preview at a separate Supabase project):
+
+   | Variable | Value |
+   |---|---|
+   | `DATABASE_URL` | Supabase transaction pooler URL (port 6543) |
+   | `DIRECT_URL` | Supabase direct / session URL (port 5432) |
+   | `APP_URL` | The final public URL, e.g. `https://screening.gpoc.co.ug` — it goes into every QR pass |
+   | `DATABASE_CA_CERT` | Supabase CA certificate (optional, recommended) |
+   | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` | Your mail provider (password-reset emails) |
+   | `CLINIC_PHONE`, `CLINIC_EMAIL` | Shown on the landing page and passes |
+   | `ALLOWED_EMAIL_DOMAIN` | e.g. `gpoc.co.ug`, or leave unset |
+
+3. Deploy. The build runs `scripts/vercel-build.mjs`: it generates the Prisma
+   client, applies any new migrations **on production deploys only**
+   (`prisma migrate deploy` via `DIRECT_URL`; never on previews), then runs
+   `next build`. Set `RUN_MIGRATIONS=false` to apply migrations by hand instead
+   (`DIRECT_URL=… npx prisma migrate deploy`).
+4. Optional demo data: `DATABASE_URL=<direct URL> npm run db:seed` from your
+   machine (creates `demo@gpoc.test` / `Demo1234` — don't do this on the real
+   production database).
+5. Add your domain (Settings › Domains) and set `APP_URL` to it.
+
+Notes:
+- Each function instance keeps at most 3 database connections
+  (`DB_POOL_MAX`), which suits Supabase's pooler.
+- Sessions, login rate-limiting and password-reset tokens are all stored in
+  the database, so they work across serverless instances.
+- Preview deployments get a slightly relaxed Content-Security-Policy so the
+  Vercel toolbar works; production keeps the strict one.
+- `public/logo.svg` is detected at build time — redeploy after adding it.
+
 ## 5. Where to edit things
 
 | What | File |

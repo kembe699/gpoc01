@@ -4,8 +4,11 @@
 
 FROM node:22-slim AS deps
 WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm ci --legacy-peer-deps
+COPY package.json package-lock.json .npmrc ./
+# postinstall runs `prisma generate`, which needs the schema.
+COPY prisma ./prisma
+COPY prisma.config.ts ./
+RUN npm ci
 
 FROM node:22-slim AS builder
 WORKDIR /app

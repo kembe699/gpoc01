@@ -3,7 +3,13 @@
 // not here.
 
 export const config = {
-  appUrl: process.env.APP_URL ?? "http://localhost:3000",
+  // Must be the stable public address: it goes into every QR pass and email
+  // link. Set APP_URL in production; on Vercel it otherwise falls back to the
+  // project's production domain (never the per-deployment VERCEL_URL, which
+  // would leave old passes pointing at a dead preview address).
+  appUrl: (process.env.APP_URL
+    || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "")
+    || "http://localhost:3000").replace(/\/$/, ""),
   allowedEmailDomain: process.env.ALLOWED_EMAIL_DOMAIN?.trim().toLowerCase() || null,
   clinic: {
     phone: process.env.CLINIC_PHONE || "+256 000 000 000",

@@ -1,11 +1,10 @@
 import Image from "next/image";
-import { existsSync } from "fs";
-import { join } from "path";
 
 // Swap in the real logo by adding /public/logo.svg — this falls back to a
 // plain text wordmark until that file exists, so the app works today and
-// just needs the image dropped in later with no code changes.
-const hasRealLogo = existsSync(join(process.cwd(), "public", "logo.svg"));
+// just needs the image dropped in later with no code changes. Checked at
+// build time (next.config.ts): on Vercel, public/ isn't on the function's disk.
+const hasRealLogo = process.env.NEXT_PUBLIC_HAS_LOGO === "1";
 
 export function Logo({
   className = "",

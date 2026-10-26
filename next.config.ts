@@ -1,4 +1,13 @@
 import type { NextConfig } from "next";
+import { existsSync } from "fs";
+import { join } from "path";
+
+// On Vercel `public/` is served from the CDN and is not in the function's
+// filesystem, so whether the real logo exists is decided here, at build time.
+const hasRealLogo = existsSync(join(process.cwd(), "public", "logo.svg"));
+// Vercel's preview deployments inject the Vercel toolbar (comments, share)
+// from vercel.live; production keeps the strict policy below.
+const isVercelPreview = process.env.VERCEL_ENV === "preview";
 
 // `cacheComponents`/`partialPrefetching` (Next 16 experimental caching) are
 // deliberately left off — every signed-in page here renders per-session
@@ -7,8 +16,11 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // Needed for the multi-stage Dockerfile — bundles a minimal
   // node_modules subset into .next/standalone rather than shipping the
-  // whole dependency tree.
-  output: "standalone",
+  // whole dependency tree. Vercel builds its own output, so it is skipped there.
+  ...(process.env.VERCEL ? {} : { output: "standalone" as const }),
+  env: {
+    NEXT_PUBLIC_HAS_LOGO: hasRealLogo ? "1" : "",
+  },
   // Wires Tailwind v4 into Turbopack's CSS pipeline — without this,
   // `@import "tailwindcss"` in globals.css never actually compiles to
   // utility classes (the page renders completely unstyled, with no error).
@@ -30,11 +42,12 @@ const nextConfig: NextConfig = {
     const isDev = process.env.NODE_ENV !== "production";
     const csp = [
       "default-src 'self'",
-      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
-      "style-src 'self' 'unsafe-inline'",
-      "img-src 'self' data:",
-      "font-src 'self' data:",
-      "connect-src 'self'",
+      `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}${isVercelPreview ? " https://vercel.live" : ""}`,
+      `style-src 'self' 'unsafe-inline'${isVercelPreview ? " https://vercel.live" : ""}`,
+      `img-src 'self' data:${isVercelPreview ? " https://vercel.live https://vercel.com" : ""}`,
+      `font-src 'self' data:${isVercelPreview ? " https://vercel.live https://assets.vercel.com" : ""}`,
+      `connect-src 'self'${isVercelPreview ? " https://vercel.live wss://ws-us3.pusher.com" : ""}`,
+      ...(isVercelPreview ? ["frame-src https://vercel.live"] : []),
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",
