@@ -49,6 +49,19 @@ function buildPrismaClient() {
 // instance reuses one pool across requests.
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
-export const prisma = globalForPrisma.prisma ?? buildPrismaClient();
+function client(): PrismaClient {
+  if (!globalForPrisma.prisma) globalForPrisma.prisma = buildPrismaClient();
+  return globalForPrisma.prisma;
+}
 
-globalForPrisma.prisma = prisma;
+// Built on first use, not when this module loads. `next build` imports every
+// route while collecting page data, and must not need a database (or
+// DATABASE_URL) to do that — a missing URL now surfaces at request time,
+// with the message above, instead of failing the whole build.
+export const prisma = new Proxy({} as PrismaClient, {
+  get(_target, prop) {
+    const real = client();
+    const value = Reflect.get(real, prop, real);
+    return typeof value === "function" ? value.bind(real) : value;
+  },
+});
