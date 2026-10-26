@@ -219,8 +219,10 @@ libraries or auth — only its Postgres.
 2. Project Settings › Database › **Connection string**: copy two URLs
    (replace `[YOUR-PASSWORD]` with the database password):
    - **Transaction pooler** (port **6543**) → `DATABASE_URL` (the app at runtime)
-   - **Direct connection** (port **5432**) → `DIRECT_URL` (migrations). If your
-     network has no IPv6, use the **Session pooler** URL (also port 5432) instead.
+   - **Session pooler** (same host, port **5432**) → `DIRECT_URL` (migrations).
+     Not the "Direct connection" (`db.<ref>.supabase.co`): it is IPv6-only, and
+     Vercel's build servers can't reach IPv6. Don't add `?pgbouncer=true` or
+     `?sslmode=` to either URL; URL-encode special characters in the password.
 3. Optional but recommended: Project Settings › Database › **SSL** › download
    the CA certificate and put its contents in `DATABASE_CA_CERT`, so TLS is
    fully verified.
@@ -240,7 +242,7 @@ libraries or auth — only its Postgres.
    | Variable | Value |
    |---|---|
    | `DATABASE_URL` | Supabase transaction pooler URL (port 6543) |
-   | `DIRECT_URL` | Supabase direct / session URL (port 5432) |
+   | `DIRECT_URL` | Supabase **session pooler** URL (port 5432) |
    | `APP_URL` | The final public URL, e.g. `https://screening.gpoc.co.ug` — it goes into every QR pass |
    | `DATABASE_CA_CERT` | Supabase CA certificate (optional, recommended) |
    | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` | Your mail provider (password-reset emails) |
