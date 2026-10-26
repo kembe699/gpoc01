@@ -5,11 +5,11 @@ import { generateQrPngBuffer } from "./qr";
 import { buildVerifyUrl } from "./verifyUrl";
 import { formatDate, formatDateTime, formatDuration } from "./dates";
 
-const NAVY = rgb(0x0f / 255, 0x1e / 255, 0x2e / 255);
-const MUTED = rgb(0x5b / 255, 0x6b / 255, 0x78 / 255);
+const NAVY = rgb(0x1b / 255, 0x3d / 255, 0x66 / 255); // theme --color-navy (logo blue)
+const MUTED = rgb(0x5a / 255, 0x68 / 255, 0x78 / 255);
 const DANGER = rgb(0xb3 / 255, 0x26 / 255, 0x1e / 255);
 const SUCCESS = rgb(0x1f / 255, 0x7a / 255, 0x3d / 255);
-const BORDER = rgb(0xdd / 255, 0xe3 / 255, 0xe6 / 255);
+const BORDER = rgb(0xdc / 255, 0xe3 / 255, 0xec / 255);
 
 function purposeLabel(purpose: string, purposeOther: string | null): string {
   if (purpose === "BUSINESS") return "Business";

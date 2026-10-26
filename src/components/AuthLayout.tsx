@@ -15,6 +15,8 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col lg:flex-row">
       <div className="relative overflow-hidden bg-[var(--color-navy)] lg:w-[42%]">
+        {/* The logo's swirl colours, as a thin stripe */}
+        <div className="absolute inset-x-0 top-0 h-1" style={{ background: "var(--gradient-brand)" }} aria-hidden="true" />
         <div className="pointer-events-none absolute inset-0 opacity-[0.05]" aria-hidden="true">
           <svg width="100%" height="100%">
             <pattern id="auth-grid" width="40" height="40" patternUnits="userSpaceOnUse">
@@ -31,7 +33,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
             <p className="max-w-sm text-xl font-bold leading-snug text-white lg:text-2xl">
               Screen before you travel.
             </p>
-            <p className="mt-3 hidden max-w-sm text-sm leading-relaxed text-[#c3d1cd] lg:block">
+            <p className="mt-3 hidden max-w-sm text-sm leading-relaxed text-[#c9d6e8] lg:block">
               Every GPOC staff member travelling abroad completes a short EVD exposure check and
               leaves with a verifiable travel pass.
             </p>
@@ -45,7 +47,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
                   i < FACTS.length - 1 ? "border-b border-white/10 pb-3.5" : ""
                 }`}
               >
-                <dt className="text-[#9fb6b0]">{fact.term}</dt>
+                <dt className="text-[#a9bcd8]">{fact.term}</dt>
                 <dd className="text-right font-medium text-white">{fact.value}</dd>
               </div>
             ))}

@@ -3,8 +3,8 @@ import { existsSync } from "fs";
 import { join } from "path";
 
 // On Vercel `public/` is served from the CDN and is not in the function's
-// filesystem, so whether the real logo exists is decided here, at build time.
-const hasRealLogo = existsSync(join(process.cwd(), "public", "logo.svg"));
+// filesystem, so which logo file exists is decided here, at build time.
+const logoFile = ["logo.svg", "logo.png"].find((f) => existsSync(join(process.cwd(), "public", f)));
 // Vercel's preview deployments inject the Vercel toolbar (comments, share)
 // from vercel.live; production keeps the strict policy below.
 const isVercelPreview = process.env.VERCEL_ENV === "preview";
@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
   // whole dependency tree. Vercel builds its own output, so it is skipped there.
   ...(process.env.VERCEL ? {} : { output: "standalone" as const }),
   env: {
-    NEXT_PUBLIC_HAS_LOGO: hasRealLogo ? "1" : "",
+    NEXT_PUBLIC_LOGO: logoFile ? `/${logoFile}` : "",
   },
   // Wires Tailwind v4 into Turbopack's CSS pipeline — without this,
   // `@import "tailwindcss"` in globals.css never actually compiles to

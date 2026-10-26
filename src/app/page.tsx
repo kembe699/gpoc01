@@ -9,6 +9,7 @@ export default async function LandingPage() {
 
   return (
     <div className="flex min-h-screen flex-col">
+      <div className="h-1" style={{ background: "var(--gradient-brand)" }} aria-hidden="true" />
       <header className="border-b border-[var(--color-border)] bg-[var(--color-card)]">
         <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6">
           <Logo />
@@ -43,13 +44,13 @@ export default async function LandingPage() {
 
       <main className="flex flex-1 items-center bg-[var(--color-navy)]">
         <section className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6 sm:py-24">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#8fb9b2]">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-brand-amber)]">
             HSE Department &middot; President&rsquo;s Office (PO)
           </p>
           <h1 className="mt-4 max-w-3xl text-3xl font-bold tracking-tight text-white text-balance sm:text-4xl lg:text-5xl">
             GPOC Staff Travel Screening
           </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#c3d1cd]">
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#c9d6e8]">
             For GPOC staff travelling out of the country and coming back. Complete the screening
             form before you travel and on your return. This system is run by the Health, Safety
             and Environment (HSE) Department under the President&rsquo;s Office.
@@ -72,7 +73,7 @@ export default async function LandingPage() {
                 <p className="text-sm font-medium text-white">
                   You must sign in before you can fill in the screening form.
                 </p>
-                <p className="mt-1 text-sm text-[#c3d1cd]">
+                <p className="mt-1 text-sm text-[#c9d6e8]">
                   First time here? Create an account with your GPOC details, then sign in.
                 </p>
                 <div className="mt-4 flex flex-wrap items-center gap-3">

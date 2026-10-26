@@ -35,7 +35,7 @@ export async function generateQrPngWithLabel(text: string, label: string): Promi
     <svg width="${size}" height="${labelHeight}" xmlns="http://www.w3.org/2000/svg">
       <rect width="100%" height="100%" fill="#ffffff" />
       <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle"
-        font-family="monospace" font-size="34" fill="#0F1E2E">${escapeXml(label)}</text>
+        font-family="monospace" font-size="34" fill="#1B3D66">${escapeXml(label)}</text>
     </svg>
   `;
 

@@ -11,17 +11,29 @@
 @source "..";
 
 :root {
-  --color-navy: #0f1e2e;
-  --color-teal: #0d6b5f;
-  --color-teal-dark: #0a5349;
-  --color-page-bg: #f5f7f8;
+  /* Taken from the GPOC logo (blue #4379ba, green #65b091, yellow #faf582,
+     amber #f7cb6f, orange #f29e6a). The token names are kept from the
+     original theme so no component changes: "navy" is the logo's blue,
+     deepened for text and the dark panels (11:1 with white), and "teal" is
+     the logo's green, darkened so white button text stays readable (5.2:1). */
+  --color-navy: #1b3d66;
+  --color-teal: #2b7a58;
+  --color-teal-dark: #21603f;
+  --color-brand-blue: #4379ba;
+  --color-brand-green: #65b091;
+  --color-brand-yellow: #faf582;
+  --color-brand-amber: #f7cb6f;
+  --color-brand-orange: #f29e6a;
+  /* The logo's swirl, as a thin accent stripe. */
+  --gradient-brand: linear-gradient(90deg, #4379ba, #65b091 35%, #faf582 65%, #f29e6a);
+  --color-page-bg: #f6f8fb;
   --color-card: #ffffff;
-  --color-border: #dde3e6;
+  --color-border: #dce3ec;
   --color-danger: #b3261e;
   --color-danger-bg: #fbeceb;
   --color-success: #1f7a3d;
   --color-success-bg: #eaf4ec;
-  --color-muted: #5b6b78;
+  --color-muted: #5a6878;
 }
 
 body {
