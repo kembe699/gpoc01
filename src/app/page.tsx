@@ -45,7 +45,7 @@ export default async function LandingPage() {
       <main className="flex flex-1 items-center bg-[var(--color-navy)]">
         <section className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6 sm:py-24">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-brand-amber)]">
-            HSE Department &middot; President&rsquo;s Office (PO)
+            HSE Department &middot; President&rsquo;s Office
           </p>
           <h1 className="mt-4 max-w-3xl text-3xl font-bold tracking-tight text-white text-balance sm:text-4xl lg:text-5xl">
             GPOC Staff Travel Screening
